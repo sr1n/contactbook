@@ -1,0 +1,75 @@
+
+<div class="row mt-3">
+
+<div class="col-md-10 "><div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text" id="basic-addon1" ><i class="fa fa-search"></i></span>
+  </div>
+  <input type="text" class="form-control" [(ngModel)]="searchText" placeholder="Search by name or email..." aria-label="Username" aria-describedby="basic-addon1">
+</div></div>
+   <a (click)="toggle()" class="btn "><i class="fa fa-bars"></i></a>
+
+   <div class="dropdown">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+      Sort
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" (click)="sortFun('email')">Email</a>
+      <a class="dropdown-item" (click)="sortFun('name')">Name</a>
+     
+    </div>
+  </div>
+  </div>
+
+   <div *ngIf="_service.toggle">
+<div *ngFor="let item of contactsObj | search: {email:searchText, first_name:searchText} ">
+<div class="card mb-3" style="max-width: 540px;">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <img src={{item.avatar}}  class="card-img" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{item.first_name}}{{item.last_name}}</h5>
+          <p class="card-text">Email:{{item.email}} </p>
+          <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ </div>
+
+<div *ngIf="!_service.toggle" class="row"> 
+<div  *ngFor="let item of contactsObj">
+  <div class="col-md-4">
+  <div class="card" style="width: 18rem;">
+    <img src={{item.avatar}} class="card-img-top" alt="...">
+    <div class="card-body">
+      <p class="card-title">{{item.first_name}}{{item.last_name}}</p>
+      <p>Email:{{item.email}}</p>
+    </div>
+  </div>
+  </div>
+</div>
+</div> 
+<!-- Pagination -->
+
+<ul  class="mt-2 pagination">
+  <li class="page-item " [ngClass]="{disabled:pager.currentPage === 1}">
+      <a (click)="setPage(1)">First</a>
+  </li>
+  <li class="page-item previous-item" [ngClass]="{disabled:pager.currentPage === 1}">
+      <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+  </li>
+  <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+      <a (click)="setPage(page)">{{page}}</a>
+  </li>
+  <li  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+      <a (click)="setPage(pager.currentPage + 1)">Next</a>
+  </li>
+  <li  [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+      <a (click)="setPage(pager.totalPages)">Last</a>
+  </li>
+</ul>
+
